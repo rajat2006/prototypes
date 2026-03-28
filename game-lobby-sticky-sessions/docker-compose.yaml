@@ -1,0 +1,22 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - lobby-net
+  game-server-1:
+    build: ./game-server
+    ports:
+      - 5001:5000
+    environment:
+      - SERVER_ID=server-1
+      - PORT=5000
+      - REDIS_URL=redis://redis:6379
+    networks:
+      - lobby-net
+    depends_on:
+      - redis
+networks:
+  lobby-net:
+    driver: bridge
