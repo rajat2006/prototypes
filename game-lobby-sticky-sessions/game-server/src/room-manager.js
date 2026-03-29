@@ -10,7 +10,7 @@ const ROOM_CAP = 10;
 
 const roomMap = new Map();
 
-const generateNewRoomId = () => uuidv4().substring(0, 4);
+const generateNewRoomId = () => uuidv4().substring(0, 4).toUpperCase();
 
 const createRoom = (playerName, ws) => {
   let newRoomId = generateNewRoomId();

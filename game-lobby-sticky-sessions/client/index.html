@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Quiz Game</h1>
+
+    <!-- Screen: Enter Name -->
+    <div id="screen-lobby" class="screen active">
+      <input type="text" id="player-name" placeholder="Enter your name" maxlength="20">
+      <div class="btn-group">
+        <button id="btn-create">Create Room</button>
+        <button id="btn-join-toggle">Join Room</button>
+      </div>
+      <div id="join-section" class="hidden">
+        <input type="text" id="room-code" placeholder="Room code (e.g. ABCD)" maxlength="4">
+        <button id="btn-join">Join</button>
+      </div>
+    </div>
+
+    <!-- Screen: Waiting Room -->
+    <div id="screen-waiting" class="screen">
+      <h2>Room: <span id="room-id"></span></h2>
+      <p id="server-info"></p>
+      <h3>Players</h3>
+      <ul id="player-list"></ul>
+      <button id="btn-start" class="hidden">Start Game</button>
+      <p id="waiting-msg">Waiting for host to start...</p>
+    </div>
+
+    <!-- Screen: Question -->
+    <div id="screen-question" class="screen">
+      <div class="round-info">
+        <span id="round-num"></span>
+        <span id="timer"></span>
+      </div>
+      <h2 id="question-text"></h2>
+      <div id="options"></div>
+    </div>
+
+    <!-- Screen: Round Result -->
+    <div id="screen-result" class="screen">
+      <h2>Round Result</h2>
+      <p id="result-feedback"></p>
+      <h3>Scores</h3>
+      <ol id="round-scores"></ol>
+      <p class="next-round-msg">Next round starting soon...</p>
+    </div>
+
+    <!-- Screen: Game Over -->
+    <div id="screen-gameover" class="screen">
+      <h2>Game Over!</h2>
+      <ol id="leaderboard"></ol>
+      <button id="btn-back-lobby">Back to Lobby</button>
+    </div>
+
+    <!-- Error display -->
+    <div id="error-bar" class="hidden"></div>
+  </div>
+
+  <script src="client.js"></script>
+</body>
+</html>
