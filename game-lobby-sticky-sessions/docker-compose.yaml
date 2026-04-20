@@ -17,6 +17,19 @@ services:
       - lobby-net
     depends_on:
       - redis
+
+  game-server-2:
+    build: ./game-server
+    ports:
+      - 5002:5000
+    environment:
+      - SERVER_ID=server-2
+      - PORT=5000
+      - REDIS_URL=redis://redis:6379
+    networks:
+      - lobby-net
+    depends_on:
+      - redis
 networks:
   lobby-net:
     driver: bridge
