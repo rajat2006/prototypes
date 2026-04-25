@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent Trace</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <header class="brand">
+          <div>
+            <h1>Agent Trace</h1>
+            <p id="syncStatus">Not synced yet</p>
+          </div>
+          <button id="syncButton" class="icon-button primary" title="Sync sessions" aria-label="Sync sessions">
+            <span>Sync</span>
+          </button>
+        </header>
+
+        <section class="metrics" aria-label="Sync metrics">
+          <div>
+            <strong id="metricSessions">0</strong>
+            <span>sessions</span>
+          </div>
+          <div>
+            <strong id="metricEvents">0</strong>
+            <span>events</span>
+          </div>
+          <div>
+            <strong id="metricSubagents">0</strong>
+            <span>subagents</span>
+          </div>
+        </section>
+
+        <div class="filters">
+          <label>
+            <span>Search</span>
+            <input id="searchInput" type="search" placeholder="Project, title, path" />
+          </label>
+          <div class="segmented" role="tablist" aria-label="Harness filter">
+            <button class="active" data-harness="all">All</button>
+            <button data-harness="claude">Claude</button>
+            <button data-harness="codex">Codex</button>
+          </div>
+        </div>
+
+        <nav id="sessionList" class="session-list" aria-label="Sessions"></nav>
+      </aside>
+
+      <main class="workspace">
+        <section class="session-header">
+          <div>
+            <div id="selectedHarness" class="eyebrow">No Session</div>
+            <h2 id="selectedTitle">Press Sync to load local agent sessions</h2>
+            <p id="selectedMeta"></p>
+          </div>
+          <div id="selectedStats" class="stat-row"></div>
+        </section>
+
+        <section class="content-grid">
+          <section class="flow-panel">
+            <div class="panel-toolbar">
+              <div class="tabs" role="tablist" aria-label="Event filter">
+                <button class="active" data-kind="all">All</button>
+                <button data-kind="tool">Tools</button>
+                <button data-kind="error">Errors</button>
+                <button data-kind="message">Messages</button>
+              </div>
+              <div class="graph-actions">
+                <span id="eventCountLabel"></span>
+                <button id="jumpStart" class="ghost-button" title="Jump to the first node" aria-label="Jump to first node">Start</button>
+                <button id="jumpPrev" class="ghost-button" title="Previous node" aria-label="Previous node">Prev</button>
+                <button id="jumpNext" class="ghost-button" title="Next node" aria-label="Next node">Next</button>
+                <button id="zoomOut" class="ghost-button" title="Zoom out" aria-label="Zoom out">-</button>
+                <button id="zoomReset" class="ghost-button" title="Reset graph view" aria-label="Reset graph view">Reset</button>
+                <button id="zoomIn" class="ghost-button" title="Zoom in" aria-label="Zoom in">+</button>
+              </div>
+            </div>
+            <div id="timeline" class="graph-viewport empty-state">
+              <p>Sync local logs to visualize the chronological flow.</p>
+            </div>
+          </section>
+
+          <aside class="detail-pane">
+            <div class="detail-header">
+              <div>
+                <span id="detailKind" class="pill">Event</span>
+                <h3 id="detailTitle">Select an event</h3>
+              </div>
+              <button id="rawToggle" class="ghost-button" disabled>Raw</button>
+            </div>
+            <dl id="detailFacts" class="facts"></dl>
+            <pre id="detailRaw" class="raw hidden"></pre>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
