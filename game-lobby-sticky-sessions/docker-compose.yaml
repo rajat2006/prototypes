@@ -30,6 +30,19 @@ services:
       - lobby-net
     depends_on:
       - redis
+
+  router:
+    build:
+      context: .
+      dockerfile: router/Dockerfile
+    ports:
+      - 4000:4000
+    networks:
+      - lobby-net
+    depends_on:
+      - game-server-1
+      - game-server-2
+
 networks:
   lobby-net:
     driver: bridge

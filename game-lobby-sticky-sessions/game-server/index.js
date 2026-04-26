@@ -60,6 +60,8 @@ wss.on("connection", (ws, req) => {
   let currentRoomId = params.roomId || null;
   let currentPlayerId = null;
 
+  console.log(`[${SERVER_ID}] WS connection opened (roomId hint: ${currentRoomId || "none"})`);
+
   ws.on("message", (raw) => {
     let data;
     try {
@@ -82,6 +84,7 @@ wss.on("connection", (ws, req) => {
           const { roomId, playerId } = createRoom(data.playerName, ws);
           currentRoomId = roomId;
           currentPlayerId = playerId;
+          console.log(`[${SERVER_ID}] CREATE_ROOM by ${data.playerName} -> ${roomId}`);
           sendTo(ws, { type: "room_created", roomId, playerId });
           break;
         }
@@ -89,6 +92,7 @@ wss.on("connection", (ws, req) => {
           const { playerId } = joinRoom(data.roomId, data.playerName, ws);
           currentRoomId = data.roomId;
           currentPlayerId = playerId;
+          console.log(`[${SERVER_ID}] JOIN_ROOM by ${data.playerName} -> ${data.roomId}`);
           const state = getRoomState(currentRoomId);
           const room = getRoom(currentRoomId);
           broadcast(room, { type: "player_joined", players: state.players });

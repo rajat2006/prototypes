@@ -1,5 +1,5 @@
 // Phase 1: connect directly to game server. Phase 2: switch to window.location.host
-const WS_URL = "ws://localhost:5001/ws";
+const WS_URL = "ws://localhost:4000/ws";
 
 let ws = null;
 let myPlayerId = null;
@@ -137,7 +137,7 @@ function renderQuestion(msg) {
   els.options.innerHTML = msg.options
     .map(
       (opt, i) =>
-        `<button class="option-btn" data-index="${i}">${opt}</button>`
+        `<button class="option-btn" data-index="${i}">${opt}</button>`,
     )
     .join("");
 
