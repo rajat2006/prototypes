@@ -120,7 +120,7 @@ game-lobby-sticky-sessions/
 2. **OpenResty Dockerfile** (`router/Dockerfile`) — Based on `openresty/openresty:alpine`, copy `nginx.conf` and `lua/` scripts [DONE]
 3. **Nginx config** (`router/nginx.conf`) — Define upstream blocks for game servers, WebSocket upgrade handling, `location /ws` using `access_by_lua_file` for routing, `location /` to serve client static files, `location /api` for dashboard stats [DONE — basic round-robin proxy; Lua sticky logic added in Step 5]
 4. **Add `router` service to docker-compose** — Use root context (`context: .`, `dockerfile: router/Dockerfile`), expose port 4000, depend on both game servers, join `lobby-net` [DONE — confirmed round-robin bug: rooms scatter across servers, joiners hit "Room does not exist"]
-5. **Routing logic** (`router/lua/routing.lua`) — Lua script using `resty.redis`: [IN PROGRESS]
+5. **Routing logic** (`router/lua/routing.lua`) — Lua script using `resty.redis`: [DONE — sticky routing verified via Redis HGETALL room_routes; joiners stay with creators] Used `proxy_pass http://$target` instead of `balancer_by_lua_block` since the latter can't resolve hostnames.
    - Extract `roomId` from `ngx.var.arg_roomId`
    - `HGET room_routes <roomId>` → if found and healthy, set `ngx.var.target` to that upstream
    - If not found → query each server's `/health` endpoint, pick least-loaded, `HSET room_routes`, set target

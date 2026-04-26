@@ -50,8 +50,8 @@ function showScreen(name) {
 
 // --- WebSocket ---
 
-function connect() {
-  ws = new WebSocket(WS_URL);
+function connect(query = "") {
+  ws = new WebSocket(WS_URL + query);
 
   ws.onopen = () => {
     console.log("Connected to server");
@@ -216,7 +216,7 @@ els.btnJoin.addEventListener("click", () => {
   if (!name) return showError("Enter your name");
   if (!roomId) return showError("Enter a room code");
 
-  connect();
+  connect(`?roomId=${roomId}`);
   ws.onopen = () => {
     send({ type: "join_room", roomId, playerName: name });
     myRoomId = roomId;

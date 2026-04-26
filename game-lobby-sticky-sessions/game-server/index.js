@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
 const url = require("url");
+const { createClient } = require("redis");
 const {
   createRoom,
   joinRoom,
@@ -14,6 +15,11 @@ const { QuizEngine } = require("./src/quiz-engine");
 
 const PORT = process.env.PORT || 5000;
 const SERVER_ID = process.env.SERVER_ID || "server-local";
+const REDIS_URL = process.env.REDIS_URL || "redis://redis:6379";
+
+const redisClient = createClient({ url: REDIS_URL });
+redisClient.on("error", (err) => console.error(`[${SERVER_ID}] Redis error:`, err));
+redisClient.connect().then(() => console.log(`[${SERVER_ID}] Connected to Redis`));
 
 const app = express();
 const server = http.createServer(app);
@@ -85,6 +91,10 @@ wss.on("connection", (ws, req) => {
           currentRoomId = roomId;
           currentPlayerId = playerId;
           console.log(`[${SERVER_ID}] CREATE_ROOM by ${data.playerName} -> ${roomId}`);
+          // Register sticky route so subsequent joiners are routed here.
+          redisClient.hSet("room_routes", roomId, SERVER_ID).catch((err) =>
+            console.error(`[${SERVER_ID}] Failed to write room_routes:`, err)
+          );
           sendTo(ws, { type: "room_created", roomId, playerId });
           break;
         }
